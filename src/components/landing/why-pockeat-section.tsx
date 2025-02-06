@@ -17,7 +17,7 @@ import {
 const mainFeatures = [
   {
     icon: Scan,
-    title: 'AI-Powered Food Recognition',
+    title: 'Pengenalan Makanan dengan AI',
     description: 'Teknologi AI canggih yang dapat mendeteksi jenis makanan, porsi, dan kalori secara instan hanya dengan foto',
     color: 'text-[#4AB8A1]',
     gradient: 'from-[#4AB8A1]',
@@ -30,7 +30,7 @@ const mainFeatures = [
   },
   {
     icon: Brain,
-    title: 'Smart Personalization',
+    title: 'Personalisasi Cerdas',
     description: 'Rekomendasi personal yang disesuaikan dengan preferensi, target, dan pola makanmu',
     color: 'text-[#FF6B35]',
     gradient: 'from-[#FF6B35]',
@@ -46,13 +46,13 @@ const mainFeatures = [
 const supportingFeatures = [
   {
     icon: Target,
-    title: 'Progress Tracking',
+    title: 'Pelacakan Progress',
     description: 'Pantau perkembangan dengan insight dan analisis yang komprehensif',
     integrations: ['Google Fit', 'Apple Health']
   },
   {
     icon: Heart,
-    title: 'Gamification System',
+    title: 'Sistem Gamifikasi',
     description: 'Pet companion yang memotivasi konsistensi melalui sistem reward',
     integrations: ['Daily Rewards', 'Achievement Badges']
   }
@@ -61,12 +61,12 @@ const supportingFeatures = [
 const uniquePoints = [
   {
     icon: Rocket,
-    title: 'All-in-One Solution',
+    title: 'Solusi Lengkap',
     description: 'Integrasi sempurna antara tracking makanan, olahraga, dan analisis kesehatan'
   },
   {
     icon: Zap,
-    title: 'Real-time Updates',
+    title: 'Update Real-time',
     description: 'Sync otomatis dengan fitness tracker dan pembaruan data instan'
   }
 ]
