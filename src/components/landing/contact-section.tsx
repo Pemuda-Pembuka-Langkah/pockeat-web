@@ -18,26 +18,26 @@ import { Mail, MessageSquare, Users, Building2 } from 'lucide-react'
 const contactCards = [
   {
     icon: Mail,
-    title: 'Email Inquiry',
-    description: 'Reach out via email for any questions',
+    title: 'Email',
+    description: 'Hubungi kami melalui email untuk informasi',
     info: 'hello@pockeat.co.id',
   },
   {
     icon: MessageSquare,
-    title: 'Quick Chat',
-    description: 'Get fast response via WhatsApp',
+    title: 'WhatsApp',
+    description: 'Dapatkan respon cepat via WhatsApp',
     info: '+62 812-3456-7890',
   },
   {
     icon: Users,
-    title: 'Partnership',
-    description: 'Explore collaboration opportunities',
+    title: 'Kerjasama',
+    description: 'Jelajahi peluang kolaborasi bersama',
     info: 'partnership@pockeat.co.id',
   },
   {
     icon: Building2,
-    title: 'Office',
-    description: 'Visit us at Fasilkom UI',
+    title: 'Kantor',
+    description: 'Kunjungi kami di Fasilkom UI',
     info: 'Fakultas Ilmu Komputer UI, Depok',
   },
 ]
@@ -49,12 +49,12 @@ const ContactSection = () => {
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold sm:text-4xl">
-            Get in Touch with{' '}
+            Hubungi{' '}
             <span className="text-[#4AB8A1]">Pock</span>
             <span className="text-[#FF6B35]">eat</span>
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Have questions or want to collaborate? We'd love to hear from you!
+            Punya pertanyaan atau ingin berkolaborasi? Kami senang mendengar dari Anda!
           </p>
         </div>
 
@@ -62,14 +62,9 @@ const ContactSection = () => {
           {/* Left Column - Join Us Content */}
           <div className="space-y-8">
             <div>
-              {/* <h3 className="text-2xl font-bold">Join Us in Transforming</h3>
-              <h3 className="text-2xl font-bold">
-                <span className="text-[#4AB8A1]">Indonesian</span>{' '}
-                <span className="text-[#FF6B35]">Fitness</span>
-              </h3> */}
               <p className="mt-4 text-gray-600">
-                We're on a mission to make health tracking seamless and enjoyable for everyone. 
-                Partner with us to create a healthier Indonesia.
+                Kami memiliki misi untuk membuat tracking kesehatan menjadi lebih mudah dan menyenangkan. 
+                Mari berkolaborasi untuk Indonesia yang lebih sehat.
               </p>
             </div>
 
@@ -95,19 +90,19 @@ const ContactSection = () => {
 
             {/* Additional Info */}
             <div className="rounded-xl bg-gradient-to-r from-[#4AB8A1]/10 to-[#FF6B35]/10 p-6">
-              <h4 className="font-semibold">Why Partner With Us?</h4>
+              <h4 className="font-semibold">Mengapa Berkolaborasi dengan Kami?</h4>
               <ul className="mt-4 space-y-3 text-gray-600">
                 <li className="flex items-center gap-2">
                   <div className="h-1.5 w-1.5 rounded-full bg-[#4AB8A1]" />
-                  <span>Access to cutting-edge AI technology</span>
+                  <span>Teknologi AI terdepan</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="h-1.5 w-1.5 rounded-full bg-[#4AB8A1]" />
-                  <span>Backed by Fasilkom UI expertise</span>
+                  <span>Didukung oleh Fasilkom UI</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="h-1.5 w-1.5 rounded-full bg-[#4AB8A1]" />
-                  <span>Growing health-conscious user base</span>
+                  <span>Pengguna yang terus berkembang</span>
                 </li>
               </ul>
             </div>
@@ -120,9 +115,9 @@ const ContactSection = () => {
                 <form className="space-y-6">
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-900">Name</label>
+                      <label className="text-sm font-medium text-gray-900">Nama</label>
                       <Input 
-                        placeholder="Your name" 
+                        placeholder="Nama lengkap" 
                         className="bg-white"
                       />
                     </div>
@@ -130,31 +125,31 @@ const ContactSection = () => {
                       <label className="text-sm font-medium text-gray-900">Email</label>
                       <Input 
                         type="email" 
-                        placeholder="you@example.com" 
+                        placeholder="nama@email.com" 
                         className="bg-white"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-900">Category</label>
+                    <label className="text-sm font-medium text-gray-900">Kategori</label>
                     <Select>
                       <SelectTrigger className="bg-white">
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder="Pilih kategori" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="investor">Investor Inquiry</SelectItem>
-                        <SelectItem value="partnership">Partnership</SelectItem>
-                        <SelectItem value="feedback">Product Feedback</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="investor">Investor</SelectItem>
+                        <SelectItem value="partnership">Kemitraan</SelectItem>
+                        <SelectItem value="feedback">Feedback Produk</SelectItem>
+                        <SelectItem value="other">Lainnya</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-900">Message</label>
+                    <label className="text-sm font-medium text-gray-900">Pesan</label>
                     <Textarea 
-                      placeholder="Your message" 
+                      placeholder="Tulis pesan Anda" 
                       className="min-h-[120px] bg-white"
                     />
                   </div>
@@ -162,7 +157,7 @@ const ContactSection = () => {
                   <Button 
                     className="w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
                   >
-                    Send Message
+                    Kirim Pesan
                   </Button>
                 </form>
               </CardContent>
