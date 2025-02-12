@@ -21,7 +21,7 @@ const PrototypeSection = () => {
       <div className="container relative mx-auto px-4">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
+          <h2 className="text-2xl font-bold sm:text-4xl lg:text-5xl">
             Lihat{' '}
             <span className="text-[#4AB8A1]">Pockeat</span>{' '}
             <span className="text-[#805E3B]">in</span>{' '}
