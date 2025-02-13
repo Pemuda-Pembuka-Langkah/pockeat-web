@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import MockupShowcase from './mockup-showcase'
-
+import Link from 'next/link'
 
 const HeroSection = () => {
   return (
@@ -26,13 +26,16 @@ const HeroSection = () => {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <Link href="https://ristek.link/pockeat" target="_blank" rel="noopener noreferrer">
               <Button 
                 variant="outline"
                 size="lg" 
+               
                 className="h-12 rounded-full border-2 border-[#4AB8A1] px-6 sm:px-8 text-base text-[#4AB8A1] transition-all hover:bg-[#4AB8A1] hover:text-white"
               >
                 Tonton Demo
-              </Button>
+              </Button></Link>
+              <Link href = "https://pockeat-mockup-production.up.railway.app"></Link>
               <Button 
                 size="lg"
                 className="group h-12 rounded-full bg-gradient-to-r from-[#FF6B35] to-[#FF8355] px-6 sm:px-8 text-base shadow-lg transition-all hover:shadow-xl"
