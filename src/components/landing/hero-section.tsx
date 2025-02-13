@@ -16,9 +16,9 @@ const HeroSection = () => {
           <div className="relative z-10 flex flex-col gap-6 lg:gap-10">
             <div className="space-y-4 lg:space-y-6">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl xl:text-7xl">
-                <span className="text-[#4AB8A1]">Transforming</span>{' '}
-                <span>Fitness</span>{' '}
-                <span className="text-[#FF6B35]">in Indonesia</span>
+                <span className="text-[#4AB8A1]">Every Meal </span>{' '}
+                <span> Matters </span>{' '}<br></br>
+                <span className="text-[#FF6B35]">Every Move </span><span>Counts</span><br></br>
               </h1>
               <p className="text-base text-gray-600 sm:text-lg lg:text-xl">
                 AI-Driven Smart Companion untuk Tracking Kalori & Kesehatan dengan Seamless
@@ -27,18 +27,18 @@ const HeroSection = () => {
 
             <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Button 
-                size="lg"
-                className="group h-12 rounded-full bg-gradient-to-r from-[#FF6B35] to-[#FF8355] px-6 sm:px-8 text-base shadow-lg transition-all hover:shadow-xl"
-              >
-                Download App
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
-              <Button 
                 variant="outline"
                 size="lg" 
                 className="h-12 rounded-full border-2 border-[#4AB8A1] px-6 sm:px-8 text-base text-[#4AB8A1] transition-all hover:bg-[#4AB8A1] hover:text-white"
               >
-                Lihat Demo
+                Tonton Demo
+              </Button>
+              <Button 
+                size="lg"
+                className="group h-12 rounded-full bg-gradient-to-r from-[#FF6B35] to-[#FF8355] px-6 sm:px-8 text-base shadow-lg transition-all hover:shadow-xl"
+              >
+                Coba Prototype
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </div>
 

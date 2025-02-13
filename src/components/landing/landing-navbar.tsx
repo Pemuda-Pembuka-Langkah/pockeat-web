@@ -65,9 +65,10 @@ const Navbar = () => {
               </button>
             ))}
             <Button 
+              onClick={() => scrollToSection('#prototype')}
               className="rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
             >
-              Download App
+              Demo
             </Button>
           </div>
 
@@ -91,9 +92,10 @@ const Navbar = () => {
                     </button>
                   ))}
                   <Button 
-                    className="mt-4 w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
+                    onClick={() => scrollToSection('#prototype')}
+                    className="mt-4 w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90" 
                   >
-                    Download App
+                    Demo
                   </Button>
                 </div>
               </SheetContent>

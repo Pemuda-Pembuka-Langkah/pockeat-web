@@ -18,11 +18,11 @@ export default function Home() {
       <main>
         <HeroSection />
         <OverviewSection/>
-        <WhyPockeatSection/>
         <HowItWorksSection/>
         <FeatureSection/>
-        <ContactSection/>
+        {/* <WhyPockeatSection/> */}
         <PrototypeSection/>
+        <ContactSection/>
       </main>
       <Footer/>
     </div>

@@ -139,7 +139,9 @@ const OverviewSection = () => {
                     dot={{ fill: '#FF6B35', strokeWidth: 2, r: 6 }}
                     activeDot={{ r: 8 }}
                   />
+                  
                 </LineChart>
+        
               </ResponsiveContainer>
             </div>
           </div>
@@ -195,6 +197,13 @@ const OverviewSection = () => {
             </div>
           </Card>
         </div>
+  
+        <div className="mt-16 text-center">
+          <p className="text-sm text-gray-500">
+            Data berdasarkan: RISKESDAS (2007-2018), Survei Kesehatan Indonesia/SKI (2023), dan Populix Survey 2023
+          </p>
+        </div>
+        <br></br>
       </div>
     </section>
   )
