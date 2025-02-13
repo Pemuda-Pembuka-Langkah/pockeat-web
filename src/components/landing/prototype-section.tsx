@@ -1,5 +1,5 @@
 "use client";
-
+import Link from 'next/link';
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -47,11 +47,13 @@ const PrototypeSection = () => {
               </p>
               
               <div className="mt-6 w-full">
+                <Link href = "https://ristek.link/pockeat">
                 <Button 
                   className="h-10 w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-sm text-white hover:opacity-90"
                 >
                   Tonton Video
                 </Button>
+                </Link>
               </div>
             </div>
           </Card>
