@@ -45,7 +45,7 @@ const mockupData = [
     feature: {
       icon: Scan,
       title: 'AI Food Scanner',
-      description: 'Scan makananmu untuk tracking kalori instant'
+      description: 'Scan makananmu untuk tracking kalori instan'
     }
   },
   {
@@ -135,7 +135,7 @@ const DesktopShowcase = () => (
       <FeatureCard
         icon={Scan}
         title="AI Food Scanner"
-        description="Scan makananmu untuk tracking kalori instant"
+        description="Scan makananmu untuk tracking kalori instan"
         className="-right-24 top-1/2"
       />
       
@@ -145,13 +145,13 @@ const DesktopShowcase = () => (
         description="Rekomendasi personal sesuai goalmu"
         className="-left-32 top-40"
       />
-      
       <FeatureCard
         icon={Heart}
         title="Pet Companion"
         description="Teman virtual untuk jaga konsistensi"
         className="-right-32 bottom-20"
       />
+      
     </div>
   </div>
 )
