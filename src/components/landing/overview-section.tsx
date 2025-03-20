@@ -14,7 +14,7 @@ const obesityData = [
 const impactCards = [
   {
     icon: TrendingUp,
-    title: 'Peningkatan Signifikan',
+    title: 'Risiko Obesitas',
     stat: '2.4x',
     description: 'Kenaikan prevalensi obesitas dalam 10 tahun terakhir'
   },
@@ -70,7 +70,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 const OverviewSection = () => {
   return (
-    <section id="overview" className="relative overflow-hidden bg-white py-20">
+    <section id="overview" className="relative overflow-hidden bg-gradient-to-br from-white to-[#FAF7F1] py-20">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#4AB8A1_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-[0.03]" />
       
@@ -78,15 +78,18 @@ const OverviewSection = () => {
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Krisis Obesitas di Indonesia: 
+            Krisis Pola Tidak Sehat di Indonesia: 
             <br />
             <span className="bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] bg-clip-text text-transparent">
               Saatnya Bertindak
             </span>
           </h2>
           <p className="mt-6 text-lg text-gray-600">
-            Berdasarkan Survei Kesehatan Indonesia (SKI) 2023, obesitas tidak hanya menjadi masalah kesehatan individu, 
-            tetapi telah berkembang menjadi krisis kesehatan nasional yang membutuhkan solusi inovatif.
+            Berdasarkan Survei Kesehatan Indonesia (SKI) 2024, obesitas 
+
+            Survei Kesehatan Indonesia (SKI) 2024 mengungkap bahwa pola makan tidak sehat kini menjadi norma di masyarakat Indonesia, 
+            sehingga tidak hanya menjadi masalah kesehatan individu, 
+            tetapi telah berkembang menjadi krisis kesehatan nasional yang membawa banyak risiko kompleks.
           </p>
         </div>
 
@@ -142,6 +145,13 @@ const OverviewSection = () => {
                 </LineChart>
               </ResponsiveContainer>
             </div>
+            <p className="text-base text-gray-600 text-center font-medium">
+              <span className="font-bold text-[#FF6B35]">Jumlah Masyarakat Indonesia</span> berusia di atas 15 tahun mengalami 
+              <span className="bg-orange-100 px-1 rounded font-semibold"> obesitas yang semakin meningkat </span>
+              setiap tahunnya, menunjukkan tren kesehatan yang 
+              <span className="text-[#4AB8A1] font-bold"> mengkhawatirkan.</span>
+        
+            </p>
           </div>
 
           {/* Challenges */}
@@ -163,6 +173,13 @@ const OverviewSection = () => {
                 </div>
               ))}
             </div>
+            <p className="text-base text-gray-600 text-center font-medium">
+              Berdasarkan survei oleh <span className="font-bold text-[#4AB8A1]">SKI dan Populix</span>, dari responden 
+              <span className="bg-yellow-100 px-1 rounded"> baik yang tidak maupun menjaga pola makan mereka </span>
+              mayoritas merasa 
+              <span className="text-[#FF6B35] font-bold"> kesusahan dalam menjaga pola makan dan pola hidup </span>
+              mereka.
+            </p>
           </div>
         </div>
 
@@ -175,8 +192,8 @@ const OverviewSection = () => {
                   Momen Tepat untuk Perubahan
                 </h3>
                 <p className="mt-4 text-lg text-gray-600">
-                  57% masyarakat sudah mulai sadar akan pentingnya tracking kalori, 
-                  namun masih membutuhkan solusi yang tepat dan mudah digunakan.
+                  Dari survei yang sama, 57% masyarakat sudah mulai sadar akan pentingnya tracking kalori, 
+                  yang juga butuh solusi yang tepat dan mudah digunakan.
                 </p>
               </div>
               <div className="flex justify-center gap-12">
@@ -188,12 +205,18 @@ const OverviewSection = () => {
                   <div className="absolute -inset-4 z-0 rounded-xl bg-gradient-to-br from-[#FF6B35]/10 to-transparent blur-lg" />
                   <div className="relative z-10">
                     <div className="text-5xl font-bold text-[#FF6B35]">43%</div>
-                    <p className="mt-2 text-gray-600">Potential users</p>
+                    <p className="mt-2 text-gray-600">Belum ketemu Pockeat 😜</p>
                   </div>
                 </div>
               </div>
             </div>
           </Card>
+        </div>
+  
+        <div className="mt-16 text-center">
+          <p className="text-sm text-gray-500">
+            Data berdasarkan: RISKESDAS (2007-2018), Survei Kesehatan Indonesia/SKI (2023), dan Populix Survey 2023
+          </p>
         </div>
       </div>
     </section>

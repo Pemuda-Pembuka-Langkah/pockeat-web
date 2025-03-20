@@ -56,7 +56,7 @@ const steps = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="relative w-full bg-gradient-to-br from-[#FAF7F1] to-white py 20">
+    <section id="how-it-works" className="relative w-full bg-gradient-to-br from-white to-[#FAF7F1]">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#4AB8A1_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-[0.03]" />
 
@@ -70,7 +70,7 @@ const HowItWorksSection = () => {
             </span>
           </h2>
           <p className="mt-6 text-lg text-gray-600">
-            4 langkah simpel untuk memulai perjalanan sehat bersama <span className="text-[#4AB8A1] font-bold">Pock</span><span className="text-[#FF6B35] font-bold">eat</span>
+            4 langkah simpel untuk memulai perjalanan sehat bersama Pockeat
           </p>
         </div>
 
@@ -114,7 +114,7 @@ const HowItWorksSection = () => {
           </div>
         </div>
 
-        {/* Try Demo CTA
+        {/* Try Demo CTA */}
         <div className="mt-16 text-center">
           <p className="text-lg text-gray-600">
             Ingin melihat langsung kemudahannya?
@@ -125,7 +125,7 @@ const HowItWorksSection = () => {
             Coba Demo Interaktif
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Button>
-        </div> */}
+        </div>
       </div>
     </section>
   )
