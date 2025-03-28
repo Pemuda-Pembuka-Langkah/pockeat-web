@@ -5,9 +5,9 @@ export async function GET(request: NextRequest) {
   
   // Ambil parameter oobCode dari URL (satu-satunya parameter yang diperlukan)
   const oobCode = searchParams.get('oobCode');
-  
+  const mode = searchParams.get('mode');
   // Periksa apakah parameter oobCode ada
-  if (oobCode) {
+  if (oobCode && mode) {
     // Buat URL dengan semua parameter yang ada di URL
     let customUrl = 'pockeat://verify?';
     
@@ -25,6 +25,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(customUrl);
   }
   
-  // Jika parameter oobCode tidak ada, arahkan ke homepage
+  // Jika parameter oobCode dan mode tidak ada, arahkan ke homepage
   return NextResponse.redirect(new URL('/', request.nextUrl.origin));
 }
