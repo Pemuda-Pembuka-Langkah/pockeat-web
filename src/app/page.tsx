@@ -8,7 +8,6 @@ import Footer from "@/components/landing/landing-footer"
 import Navbar from "@/components/landing/landing-navbar"
 import OverviewSection from "@/components/landing/overview-section"
 import PrototypeSection from "@/components/landing/prototype-section"
-import WhyPockeatSection from "@/components/landing/why-pockeat-section"
 
 export default function Home() {
   return (
