@@ -69,12 +69,4 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * Configure max allowed file size (10MB)
- */
-export const config = {
-  api: {
-    bodyParser: false,
-    responseLimit: '10mb',
-  },
-};
+
