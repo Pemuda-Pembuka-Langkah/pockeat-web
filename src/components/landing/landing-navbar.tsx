@@ -14,7 +14,8 @@ const navItems = [
   { name: 'Benefits', href: '#benefits' },
   { name: 'How it Works', href: '#how-it-works' },
   { name: 'Features', href: '#features' },
-  { name: 'Contact', href: '#contact' }
+  { name: 'Contact', href: '#contact' },
+  { name: 'Downloads', href: '/downloads', isPage: true }
 ]
 
 const Navbar = () => {
@@ -28,7 +29,12 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (href: string) => {
+  const scrollToSection = (href: string, isPage: boolean = false) => {
+    if (isPage) {
+      window.location.href = href
+      return
+    }
+    
     const element = document.querySelector(href)
     if (element) {
       const offsetTop = element.getBoundingClientRect().top + window.pageYOffset
@@ -58,7 +64,7 @@ const Navbar = () => {
             {navItems.map((item) => (
               <button
                 key={item.name}
-                onClick={() => scrollToSection(item.href)}
+                onClick={() => scrollToSection(item.href, item.isPage)}
                 className="text-sm font-medium text-gray-600 transition-colors hover:text-[#4AB8A1]"
               >
                 {item.name}
@@ -85,7 +91,7 @@ const Navbar = () => {
                   {navItems.map((item) => (
                     <button
                       key={item.name}
-                      onClick={() => scrollToSection(item.href)}
+                      onClick={() => scrollToSection(item.href, item.isPage)}
                       className="text-left text-lg font-medium text-gray-600 transition-colors hover:text-[#4AB8A1]"
                     >
                       {item.name}
