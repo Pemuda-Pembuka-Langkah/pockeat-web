@@ -1,13 +1,12 @@
 // app/page.tsx
 
 import ContactSection from "@/components/landing/contact-section"
-import FeatureSection from "@/components/landing/features-section"
 import HeroSection from "@/components/landing/hero-section"
 import HowItWorksSection from "@/components/landing/how-it-works-section"
 import Footer from "@/components/landing/landing-footer"
 import Navbar from "@/components/landing/landing-navbar"
 import OverviewSection from "@/components/landing/overview-section"
-import PrototypeSection from "@/components/landing/prototype-section"
+import PreRegisterSection from "@/components/landing/pre-register-section"
 
 export default function Home() {
   return (
@@ -16,11 +15,9 @@ export default function Home() {
       <Navbar/>
       <main>
         <HeroSection />
+        <PreRegisterSection/>
         <OverviewSection/>
         <HowItWorksSection/>
-        <FeatureSection/>
-        {/* <WhyPockeatSection/> */}
-        <PrototypeSection/>
         <ContactSection/>
       </main>
       <Footer/>
