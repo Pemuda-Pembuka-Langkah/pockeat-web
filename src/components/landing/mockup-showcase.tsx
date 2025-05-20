@@ -50,11 +50,11 @@ const mockupData = [
   },
   {
     image: '/mockups/insights.png',
-    alt: 'Smart Recommendations',
+    alt: 'Progress Berat Badan',
     feature: {
       icon: Brain,
-      title: 'Smart Recommendations',
-      description: 'Rekomendasi personal sesuai goalmu'
+      title: 'Progress Berat Badan',
+      description: 'Visualisasi progress berat badan sesuai goalmu'
     }
   },
   {
@@ -103,7 +103,7 @@ const DesktopShowcase = () => (
       <div className="absolute -left-64 top-4 scale-95 blur-[1px] transition-all duration-500 hover:scale-100 hover:blur-0">
         <Image
           src="/mockups/insights.png"
-          alt="Smart Recommendations"
+          alt="Progress Berat Badan"
           width={300}
           height={650}
           className="object-contain"
@@ -141,8 +141,8 @@ const DesktopShowcase = () => (
       
       <FeatureCard
         icon={Brain}
-        title="Smart Recommendations"
-        description="Rekomendasi personal sesuai goalmu"
+        title="Progress Berat Badan"
+        description="Visualisasi progress berat badan sesuai goalmu"
         className="-left-32 top-40"
       />
       <FeatureCard
