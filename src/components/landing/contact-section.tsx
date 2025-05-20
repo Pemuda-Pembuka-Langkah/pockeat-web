@@ -18,12 +18,6 @@ import { Mail, MessageSquare, Users, Building2, Loader2 } from 'lucide-react'
 import { toast } from 'sonner' 
 
 const contactCards = [
-  // {
-  //   icon: Mail,
-  //   title: 'Email',
-  //   description: 'Hubungi kami melalui email untuk informasi',
-  //   info: 'hello@pockeat.co.id',
-  // },
   {
     icon: MessageSquare,
     title: 'WhatsApp',
@@ -79,42 +73,21 @@ const ContactSection = () => {
   
     setIsSubmitting(true);
     try {
-      // 1. First send email to organization (separately)
-      const adminResponse = await fetch('/api/send-email', {
+      // Menggunakan API contact baru yang menangani kedua email sekaligus
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          to: process.env.NEXT_PUBLIC_SMTP_USER, // Direct reference to env var
-          subject: `Contact Message From ${formData.name} [${formData.email}]`,
-          html: generateOrganizationEmailContent(formData)
-        }),
+        body: JSON.stringify(formData),
       });
-  
-      if (!adminResponse.ok) {
-        const adminError = await adminResponse.json();
-        throw new Error(`Failed to send admin email: ${adminError.message || 'Unknown error'}`);
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Gagal mengirim pesan. Silakan coba lagi.');
       }
-  
-      // 2. Then send confirmation to user (separately)
-      const userResponse = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: formData.email,
-          subject: 'Terima Kasih Telah Menghubungi PockEat',
-          html: generateUserEmailContent(formData.name)
-        }),
-      });
-  
-      if (!userResponse.ok) {
-        const userError = await userResponse.json();
-        throw new Error(`Failed to send user email: ${userError.message || 'Unknown error'}`);
-      }
-  
+      
       toast.success('Pesan Anda telah terkirim!');
       
       // Reset form
