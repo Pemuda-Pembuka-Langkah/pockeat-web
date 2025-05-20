@@ -96,6 +96,45 @@ export class EmailService {
   }
 
   /**
+   * Mengirim email kontak dari pengguna ke admin
+   * @param name Nama pengirim
+   * @param email Email pengirim
+   * @param category Kategori pesan
+   * @param message Isi pesan
+   * @returns Promise yang resolve dengan status pengiriman
+   */
+  async sendContactEmail(name: string, email: string, category: string, message: string) {
+    const html = this.generateContactEmailContent({
+      name,
+      email,
+      category,
+      message
+    });
+    
+    return this.sendEmail({
+      to: 'pockeat.service@gmail.com',
+      subject: `Contact Message From ${name} [${email}]`,
+      html
+    });
+  }
+
+  /**
+   * Mengirim email konfirmasi ke pengguna setelah mengirim pesan kontak
+   * @param name Nama pengguna
+   * @param email Email pengguna
+   * @returns Promise yang resolve dengan status pengiriman
+   */
+  async sendConfirmationEmail(name: string, email: string) {
+    const html = this.generateUserConfirmationContent(name);
+    
+    return this.sendEmail({
+      to: email,
+      subject: 'Terima Kasih Telah Menghubungi PockEat',
+      html
+    });
+  }
+
+  /**
    * Generate HTML content for pre-register confirmation email
    * @param name User name
    * @param apkLink Link to APK
@@ -182,6 +221,58 @@ export class EmailService {
         </div>
         <div style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">
           <p>© 2025 PockEat. All rights reserved.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Membuat konten HTML untuk email yang dikirim ke admin
+   */
+  private generateContactEmailContent(data: { name: string; email: string; category: string; message: string }): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4AB8A1;">Pesan Kontak Baru dari Website PockEat</h2>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px;">
+          <p><strong>Nama:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Kategori:</strong> ${data.category}</p>
+          <p><strong>Pesan:</strong></p>
+          <div style="background-color: white; padding: 15px; border-radius: 5px; border-left: 4px solid #FF6B35; margin-top: 10px;">
+            ${data.message.replace(/\n/g, '<br/>')}
+          </div>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
+          Email ini dikirim secara otomatis dari website PockEat. 
+          Silakan balas langsung ke alamat email pengirim.
+        </p>
+      </div>
+    `;
+  }
+
+  /**
+   * Membuat konten HTML untuk email konfirmasi ke pengguna
+   */
+  private generateUserConfirmationContent(name: string): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4AB8A1;">Terima Kasih, ${name}!</h2>
+        <p>Kami telah menerima pesan Anda dan akan meresponnya segera.</p>
+        <p>Tim kami sedang meninjau pesan Anda dan akan menghubungi Anda kembali
+           dalam 1-2 hari kerja.</p>
+        <div style="margin: 30px 0; padding: 20px; background-color: #f7f9fc; border-radius: 8px;">
+          <h3 style="color: #FF6B35; margin-top: 0;">Selagi Menunggu</h3>
+          <p>Anda dapat mengunjungi resource berikut:</p>
+          <ul style="padding-left: 20px;">
+            <li>Pelajari lebih lanjut tentang <a href="https://pockeat.vercel.app" style="color: #4AB8A1; text-decoration: none;">PockEat</a></li>
+            <li>Daftar pre-register untuk mendapatkan info terbaru</li>
+            <li>Ikuti kami di sosial media untuk update terbaru</li>
+          </ul>
+        </div>
+        <p style="margin-top: 30px;">Salam hangat,</p>
+        <p style="margin: 0;"><strong>Tim PockEat</strong></p>
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #666;">
+          <p>Email ini dikirim secara otomatis, mohon tidak membalas.</p>
         </div>
       </div>
     `;

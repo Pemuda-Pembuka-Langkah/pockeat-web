@@ -10,6 +10,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card"
 import {
   Table,
@@ -21,6 +22,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Dialog,
   DialogContent,
@@ -48,6 +50,37 @@ export default function PreRegisterAdminPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(false)
   const [selectedPreRegister, setSelectedPreRegister] = useState<PreRegister | null>(null)
+  
+  // Auth state
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [authError, setAuthError] = useState('')
+
+  // Login handler
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (username === process.env.NEXT_PUBLIC_USERNAME && password === process.env.NEXT_PUBLIC_PASSWORD) {
+      setIsAuthenticated(true)
+      setAuthError('')
+      localStorage.setItem('adminAuth', 'true')
+    } else {
+      setAuthError('Username atau password salah')
+    }
+  }
+
+  // Check if user was previously logged in
+  useEffect(() => {
+    if (localStorage.getItem('adminAuth') === 'true') {
+      setIsAuthenticated(true)
+    }
+  }, [])
+
+  // Logout handler
+  const handleLogout = () => {
+    setIsAuthenticated(false)
+    localStorage.removeItem('adminAuth')
+  }
 
   // Fetch data pre-register
   const fetchPreRegisters = async () => {
@@ -98,10 +131,12 @@ export default function PreRegisterAdminPage() {
     setFilteredPreRegisters(filtered)
   }, [searchQuery, preRegisters])
 
-  // Load data when component mounts
+  // Load data when component mounts and user is authenticated
   useEffect(() => {
-    fetchPreRegisters()
-  }, [])
+    if (isAuthenticated) {
+      fetchPreRegisters()
+    }
+  }, [isAuthenticated])
 
   // Format tanggal
   const formatDate = (dateValue: any) => {
@@ -134,6 +169,52 @@ export default function PreRegisterAdminPage() {
     }
   }
 
+  // Login Form
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <Card className="w-[400px]">
+          <CardHeader>
+            <CardTitle>Admin Login</CardTitle>
+            <CardDescription>Masuk ke panel admin PockEat</CardDescription>
+          </CardHeader>
+          <form onSubmit={handleLogin}>
+            <CardContent className="space-y-4">
+              {authError && (
+                <div className="bg-red-50 text-red-700 p-3 rounded-md text-sm">
+                  {authError}
+                </div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input 
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button type="submit" className="w-full">Login</Button>
+            </CardFooter>
+          </form>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto py-10">
       <div className="mb-8 flex items-center justify-between">
@@ -147,6 +228,9 @@ export default function PreRegisterAdminPage() {
           />
           <Button onClick={fetchPreRegisters} disabled={loading}>
             {loading ? 'Loading...' : 'Refresh'}
+          </Button>
+          <Button variant="outline" onClick={handleLogout}>
+            Logout
           </Button>
         </div>
       </div>
@@ -167,7 +251,7 @@ export default function PreRegisterAdminPage() {
                   <TableHead>Email</TableHead>
                   <TableHead>Telepon</TableHead>
                   <TableHead>Tanggal Daftar</TableHead>
-                  <TableHead>Aksi</TableHead>
+                  <TableHead>Detail</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
