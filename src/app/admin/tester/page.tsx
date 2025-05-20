@@ -223,14 +223,13 @@ export default function TesterAdminPage() {
                   <TableHead>Nama</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Tanggal Daftar</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead>Detail</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredTesters.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center">
+                    <TableCell colSpan={4} className="text-center">
                       {loading ? 'Loading...' : 'Tidak ada data tester'}
                     </TableCell>
                   </TableRow>
@@ -240,23 +239,6 @@ export default function TesterAdminPage() {
                       <TableCell>{tester.name}</TableCell>
                       <TableCell>{tester.email}</TableCell>
                       <TableCell>{formatDate(tester.createdAt)}</TableCell>
-                      <TableCell>
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            tester.status === 'approved'
-                              ? 'bg-green-100 text-green-800'
-                              : tester.status === 'rejected'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}
-                        >
-                          {tester.status === 'approved'
-                            ? 'Disetujui'
-                            : tester.status === 'rejected'
-                            ? 'Ditolak'
-                            : 'Pending'}
-                        </span>
-                      </TableCell>
                       <TableCell>
                         <Dialog>
                           <DialogTrigger asChild>
@@ -306,14 +288,6 @@ export default function TesterAdminPage() {
                                     <Label>Tanggal Daftar</Label>
                                     <Input 
                                       value={formatDate(selectedTester.createdAt)} 
-                                      readOnly 
-                                      className="mt-1"
-                                    />
-                                  </div>
-                                  <div>
-                                    <Label>Status</Label>
-                                    <Input 
-                                      value={selectedTester.status || 'pending'} 
                                       readOnly 
                                       className="mt-1"
                                     />

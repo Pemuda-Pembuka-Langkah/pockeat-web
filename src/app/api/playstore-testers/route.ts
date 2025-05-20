@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { PlaystoreTesterService } from '@/services/playstore-tester-service';
 import { CreatePlaystoreTesterDto } from '@/models/playstore-tester';
+import { EmailService } from '@/services/email-service';
 
 const testerService = new PlaystoreTesterService();
+const emailService = new EmailService();
 
 export async function POST(request: Request) {
   try {
@@ -18,9 +20,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: result.error }, { status: 400 });
     }
     
+    // Kirim email konfirmasi ke tester tanpa menunggu respons
+    emailService.sendPlayStoreTesterConfirmationEmail(
+      testerData.email,
+      testerData.name
+    ).catch(err => {
+      console.error('Error sending tester confirmation email:', err);
+      // Gagal kirim email tidak mengganggu response API
+    });
+    
+    // Kirim notifikasi ke admin tanpa menunggu respons
+    emailService.sendPlayStoreTesterNotificationToAdmin({
+      name: testerData.name,
+      email: testerData.email
+    }).catch(err => {
+      console.error('Error sending admin notification email about tester:', err);
+      // Gagal kirim email tidak mengganggu response API
+    });
+    
     return NextResponse.json({ 
       success: true, 
-      message: 'Pendaftaran berhasil! Kami akan menghubungi Anda segera.',
+      message: 'Pendaftaran berhasil! Kami telah mengirimkan email dengan instruksi selanjutnya. Mohon periksa folder inbox atau spam email Anda.',
       data: result
     });
   } catch (error) {

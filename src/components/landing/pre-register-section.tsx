@@ -14,7 +14,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { Smartphone, Play, Loader2 } from 'lucide-react'
+import { Smartphone, Play, Loader2, Check, AlertCircle } from 'lucide-react'
 import { toast } from '@/hooks/use-toast'
 
 const PreRegisterSection = () => {
@@ -32,6 +32,8 @@ const PreRegisterSection = () => {
 
   const [isSubmittingApp, setIsSubmittingApp] = useState(false)
   const [isSubmittingTester, setIsSubmittingTester] = useState(false)
+  const [showPlayStoreConfirmation, setShowPlayStoreConfirmation] = useState(false)
+  const [preRegisteredData, setPreRegisteredData] = useState<{name: string, email: string} | null>(null)
 
   const handleAppInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -110,34 +112,19 @@ const PreRegisterSection = () => {
         throw new Error(data.error || 'Terjadi kesalahan saat mendaftar')
       }
       
-      // Otomatis daftarkan juga sebagai PlayStore tester
-      const testerRegistration = await registerAsPlayStoreTester(
-        appFormData.name,
-        appFormData.email
-      );
-
-      // Siapkan pesan sukses
-      let successMessage = "Pendaftaran pre-register berhasil! Kami telah mengirimkan email dengan tautan APK.";
-      
-      // Tambahkan info tentang PlayStore tester jika berhasil
-      if (testerRegistration.success) {
-        successMessage += " Anda juga telah terdaftar sebagai tester PlayStore!";
-        // Update tester form data untuk konsistensi
-        setTesterFormData({
-          name: appFormData.name,
-          email: appFormData.email
-        });
-      } else {
-        // Masih tampilkan CTA PlayStore jika pendaftaran tester gagal
-        setShowPlayStoreCTA(true);
-      }
-      
       toast({
         title: "Berhasil!",
-        description: successMessage
+        description: "Pendaftaran pre-register berhasil! Kami telah mengirimkan email dengan tautan APK. Mohon periksa folder inbox atau spam email Anda."
       })
       
-      // Reset form
+      // Tampilkan konfirmasi untuk PlayStore tester
+      setPreRegisteredData({
+        name: appFormData.name,
+        email: appFormData.email
+      });
+      setShowPlayStoreConfirmation(true)
+      
+      // Reset form pre-register
       setAppFormData({
         name: '',
         email: '',
@@ -154,6 +141,40 @@ const PreRegisterSection = () => {
       setIsSubmittingApp(false)
     }
   }
+
+  const handlePlayStoreRegistration = async () => {
+    if (!preRegisteredData) return;
+    
+    setIsSubmittingTester(true);
+    try {
+      const result = await registerAsPlayStoreTester(
+        preRegisteredData.name,
+        preRegisteredData.email
+      );
+      
+      if (result.success) {
+        toast({
+          title: "Berhasil!",
+          description: "Anda telah terdaftar sebagai tester PlayStore! Kami akan mengirimkan informasi selanjutnya melalui email."
+        });
+        setShowPlayStoreConfirmation(false);
+      } else {
+        throw new Error('Gagal mendaftar sebagai tester PlayStore');
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Terjadi kesalahan saat mendaftar sebagai tester.'
+      });
+    } finally {
+      setIsSubmittingTester(false);
+    }
+  };
+
+  const handleCancelPlayStoreRegistration = () => {
+    setShowPlayStoreConfirmation(false);
+  };
 
   const handleTesterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -309,7 +330,7 @@ const PreRegisterSection = () => {
                     </div>
 
                     <Button 
-                      type="submit"
+                      type="submit" 
                       className="w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
                       disabled={isSubmittingApp}
                     >
@@ -320,70 +341,84 @@ const PreRegisterSection = () => {
                         </>
                       ) : 'Daftar'}
                     </Button>
-                    
-                    {showPlayStoreCTA && (
-                      <div className="mt-8 relative overflow-hidden rounded-xl shadow-md animate-fade-in">
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#4AB8A1]/90 to-[#FF6B35]/90 z-0"></div>
-                        <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/pattern-light.svg')] opacity-10 z-0"></div>
+                  </form>
+
+                  {/* Konfirmasi PlayStore Tester setelah pre-register berhasil */}
+                  {showPlayStoreConfirmation && (
+                    <div className="mt-8 p-4 border border-[#4AB8A1] rounded-lg bg-[#F0FBF9]">
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="bg-[#4AB8A1] rounded-full p-1.5 text-white mt-0.5">
+                          <Check size={16} />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-[#4AB8A1]">Pendaftaran Berhasil!</h4>
+                          <p className="text-sm text-gray-600">Kami telah mengirimkan instruksi ke email Anda.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white p-4 rounded-md mb-4 border border-gray-100">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="bg-[#FF6B35]/10 rounded-full p-2">
+                            <Play className="h-5 w-5 text-[#FF6B35]" />
+                          </div>
+                          <h4 className="font-medium">Ingin menjadi PlayStore Tester?</h4>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-4">
+                          Jadilah tester PockEat di Google PlayStore dan dapatkan akses ke versi terbaru aplikasi:
+                        </p>
+                        <ul className="text-sm text-gray-600 space-y-1 mb-4 ml-1">
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                            <span>Akses prioritas ke fitur terbaru</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                            <span>Kompensasi finansial untuk kontribusi</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                            <span>Pengaruh langsung pada pengembangan produk</span>
+                          </li>
+                        </ul>
                         
-                        <div className="relative z-10 p-5">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="bg-white rounded-full p-2 shadow-sm">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="m5 3 14 9-14 9V3z"></path>
-                              </svg>
-                            </div>
-                            <h4 className="font-semibold text-white text-lg">Jadi Google Play Tester!</h4>
-                          </div>
-                          
-                          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4">
-                            <p className="text-white text-sm">
-                              ✓ Akses prioritas ke fitur terbaru
-                              <br />✓ Kompensasi finansial untuk kontribusi
-                              <br />✓ Pengaruh langsung ke pengembangan produk
-                            </p>
-                          </div>
-                          
-                          <Button 
-                            type="button"
-                            className="w-full bg-white hover:bg-white/90 text-[#4AB8A1] font-medium shadow-sm"
-                            onClick={() => {
-                              // Langsung isi form tester dengan data yang sudah ada
-                              setTesterFormData({
-                                name: appFormData.name,
-                                email: appFormData.email
-                              });
-                              // Pindah ke tab tester
-                              document.getElementById('playstore-tab')?.click();
-                            }}
+                        <div className="flex gap-3">
+                          <Button
+                            onClick={handlePlayStoreRegistration}
+                            className="flex-1 bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
+                            disabled={isSubmittingTester}
                           >
-                            Daftar Sekarang
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
-                              <path d="M5 12h14"></path>
-                              <path d="m12 5 7 7-7 7"></path>
-                            </svg>
+                            {isSubmittingTester ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Mendaftar...
+                              </>
+                            ) : 'Ya, Daftar Sebagai Tester'}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={handleCancelPlayStoreRegistration}
+                            className="flex-1"
+                            disabled={isSubmittingTester}
+                          >
+                            Tidak, Terima Kasih
                           </Button>
                         </div>
                       </div>
-                    )}
-                  </form>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
 
-            {/* Tester Tab */}
+            {/* PlayStore Tester Tab */}
             <TabsContent value="tester">
               <Card className="border-none bg-white/50 p-6 shadow-lg">
                 <CardContent className="pt-6">
                   <div className="text-center mb-6">
-                    <h3 className="text-xl font-medium">Jadi Tester Play Store</h3>
+                    <h3 className="text-xl font-medium">Daftar sebagai PlayStore Tester</h3>
                     <p className="text-gray-600 mt-2">
-                      Bergabunglah dengan program tester kami di Play Store dan berikan feedback untuk membantu kami meningkatkan aplikasi.
+                      Beri kami masukan langsung dan bantu membentuk fitur terbaru PockEat sambil mendapatkan kompensasi.
                     </p>
-                    <div className="mt-4 bg-amber-50 p-3 rounded-lg border border-amber-200">
-                      <p className="text-amber-800 font-medium">Benefit untuk Tester:</p>
-                      <p className="text-amber-700 text-sm mt-1">Dapatkan kompensasi finansial untuk feedback berkualitas</p>
-                    </div>
                   </div>
 
                   <form className="space-y-6" onSubmit={handleTesterSubmit}>
@@ -413,8 +448,29 @@ const PreRegisterSection = () => {
                       </div>
                     </div>
 
+                    <div className="bg-[#F9F5FF] border border-[#E9D7FE] rounded-lg p-4 my-4">
+                      <h4 className="font-medium text-[#6941C6] flex items-center gap-2 mb-2">
+                        <AlertCircle className="h-4 w-4" />
+                        Manfaat Tester
+                      </h4>
+                      <ul className="text-sm text-gray-600 space-y-1 ml-1">
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                          <span>Akses prioritas ke fitur terbaru</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                          <span>Kompensasi finansial untuk kontribusi</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                          <span>Pengaruh langsung pada pengembangan produk</span>
+                        </li>
+                      </ul>
+                    </div>
+
                     <Button 
-                      type="submit"
+                      type="submit" 
                       className="w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
                       disabled={isSubmittingTester}
                     >

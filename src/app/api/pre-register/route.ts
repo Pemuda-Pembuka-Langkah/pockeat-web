@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({ 
       success: true, 
-      message: 'Pendaftaran berhasil! Kami telah mengirimkan email dengan tautan APK.',
+      message: 'Pendaftaran berhasil! Kami telah mengirimkan email dengan tautan APK. Mohon periksa folder inbox atau spam email Anda.',
       data: result
     });
   } catch (error) {

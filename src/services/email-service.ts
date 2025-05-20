@@ -96,6 +96,35 @@ export class EmailService {
   }
 
   /**
+   * Kirim email konfirmasi pendaftaran PlayStore tester
+   * @param email Email tester
+   * @param name Nama tester
+   * @returns Response dari sendEmail
+   */
+  async sendPlayStoreTesterConfirmationEmail(email: string, name: string) {
+    const html = this.generatePlayStoreTesterConfirmationContent(name);
+    return this.sendEmail({
+      to: email,
+      subject: 'Pendaftaran PlayStore Tester PockEat',
+      html
+    });
+  }
+
+  /**
+   * Kirim notifikasi ke admin tentang pendaftaran PlayStore tester baru
+   * @param userData Data tester
+   * @returns Response dari sendEmail
+   */
+  async sendPlayStoreTesterNotificationToAdmin(userData: { name: string; email: string; }) {
+    const html = this.generatePlayStoreTesterAdminNotificationContent(userData);
+    return this.sendEmail({
+      to: 'pockeat.service@gmail.com',
+      subject: 'Pendaftaran PlayStore Tester Baru di PockEat',
+      html
+    });
+  }
+
+  /**
    * Mengirim email kontak dari pengguna ke admin
    * @param name Nama pengirim
    * @param email Email pengirim
@@ -273,6 +302,89 @@ export class EmailService {
         <p style="margin: 0;"><strong>Tim PockEat</strong></p>
         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #666;">
           <p>Email ini dikirim secara otomatis, mohon tidak membalas.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Generate HTML content untuk email konfirmasi pendaftaran PlayStore tester
+   * @param name Nama tester
+   * @returns HTML content
+   */
+  private generatePlayStoreTesterConfirmationContent(name: string): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="color: #4AB8A1;">Pock<span style="color: #FF6B35;">eat</span></h1>
+        </div>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #4AB8A1;">Terima Kasih, ${name}!</h2>
+          <p>Terima kasih telah mendaftar sebagai PlayStore Tester untuk PockEat!</p>
+          <p>Kami telah menerima pendaftaran Anda dan tim kami sedang meninjau informasi Anda. Kami akan menghubungi Anda segera dengan instruksi selanjutnya untuk bergabung dalam program testing kami.</p>
+          
+          <div style="margin: 25px 0; padding: 20px; background-color: #FFEFD5; border-left: 4px solid #FF6B35; border-radius: 4px;">
+            <h3 style="color: #FF6B35; margin-top: 0;">Manfaat Menjadi Tester</h3>
+            <ul style="margin-bottom: 0;">
+              <li>Akses prioritas ke fitur terbaru aplikasi</li>
+              <li>Kompensasi finansial untuk feedback berkualitas</li>
+              <li>Pengaruh langsung dalam pengembangan produk</li>
+              <li>Kesempatan untuk berinteraksi dengan tim pengembang</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+          <h3 style="color: #4AB8A1;">Apa Selanjutnya?</h3>
+          <p>Kami akan mengirimkan email dengan detail tentang:</p>
+          <ul>
+            <li>Link untuk bergabung dengan program testing Google PlayStore</li>
+            <li>Petunjuk untuk menginstal dan memberikan feedback</li>
+            <li>Informasi tentang program kompensasi tester</li>
+          </ul>
+        </div>
+        
+        <p style="margin-top: 30px;">Salam hangat,</p>
+        <p style="margin: 0;"><strong>Tim PockEat</strong></p>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #666; text-align: center;">
+          <p>© 2025 PockEat. Semua hak dilindungi.</p>
+          <p>Email ini dikirim secara otomatis, mohon tidak membalas.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Generate HTML content untuk notifikasi admin tentang tester baru
+   * @param userData Data tester
+   * @returns HTML content
+   */
+  private generatePlayStoreTesterAdminNotificationContent(userData: { name: string; email: string; }): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="color: #4AB8A1;">Pock<span style="color: #FF6B35;">eat</span> Admin</h1>
+        </div>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #4AB8A1;">Pendaftaran PlayStore Tester Baru</h2>
+          <p>Seseorang baru saja mendaftar untuk menjadi PlayStore tester PockEat:</p>
+          
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Nama</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userData.name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Email</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userData.email}</td>
+            </tr>
+          </table>
+          
+          <p>Anda dapat meninjau pendaftaran ini di <a href="/admin/tester" style="color: #4AB8A1; text-decoration: none;">dashboard admin</a>.</p>
+        </div>
+        <div style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">
+          <p>© 2025 PockEat. All rights reserved.</p>
         </div>
       </div>
     `;
