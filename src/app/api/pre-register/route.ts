@@ -25,16 +25,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: result.error }, { status: 400 });
     }
     
-    // Kirim email konfirmasi dengan link APK
-    try {
-      await emailService.sendPreRegisterConfirmationEmail(
-        preRegisterData.name,
-        preRegisterData.email
-      );
-    } catch (emailError) {
-      console.error('Error sending pre-register confirmation email:', emailError);
-      // Tetap lanjutkan meski email gagal terkirim
-    }
+    // Kirim email konfirmasi dengan link APK secara asinkron (tidak memblokir)  
+    const apkLink = process.env.APK_LINK || 'https://github.com/Pemuda-Pembuka-Langkah/pockeat-mobile/actions/runs/15113018029/artifacts/3151649368';
+    
+    // Kirim email tanpa menunggu respons
+    emailService.sendPreRegisterConfirmationEmail(
+      preRegisterData.email,
+      preRegisterData.name,
+      apkLink
+    ).catch(err => {
+      console.error('Error sending pre-register confirmation email:', err);
+      // Gagal kirim email tidak mengganggu response API
+    });
     
     return NextResponse.json({ 
       success: true, 

@@ -100,42 +100,6 @@ const ContactSection = () => {
   }
   
 
-
-  // Generate HTML content for the organization email
-  const generateOrganizationEmailContent = (data: typeof formData) => {
-    return `
-      <h2>New Contact Form Submission</h2>
-      <p><strong>Name:</strong> ${data.name}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
-      <p><strong>Category:</strong> ${data.category}</p>
-      <p><strong>Message:</strong></p>
-      <p>${data.message.replace(/\n/g, '<br>')}</p>
-      <hr>
-      <p>This message was sent from the PockEat contact form.</p>
-    `
-  }
-
-  // Generate HTML content for the user confirmation email
-  const generateUserEmailContent = (name: string) => {
-    return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h1 style="color: #4AB8A1;">Pock<span style="color: #FF6B35;">eat</span></h1>
-        </div>
-        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
-          <h2 style="color: #4AB8A1;">Terima Kasih, ${name}!</h2>
-          <p>Kami telah menerima pesan Anda dan akan segera merespons.</p>
-          <p>Tim PockEat berkomitmen untuk memberikan pengalaman terbaik dalam menjalani gaya hidup sehat yang menyenangkan.</p>
-          <p>Kami akan menghubungi Anda kembali dalam waktu 1-2 hari kerja.</p>
-        </div>
-        <div style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">
-          <p>&copy; 2025 PockEat. All rights reserved.</p>
-          <p>Fakultas Ilmu Komputer UI, Depok</p>
-        </div>
-      </div>
-    `
-  }
-
   return (
     <section id='contact' className="w-full bg-gradient-to-b from-white to-[#FAF7F1] py-20">
       <div className="container mx-auto px-4">

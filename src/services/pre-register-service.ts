@@ -1,11 +1,14 @@
 import { PreRegisterRepository } from '@/repositories/pre-register-repository';
 import { PreRegister, CreatePreRegisterDto } from '@/models/pre-register';
+import { EmailService } from './email-service';
 
 export class PreRegisterService {
   private repository: PreRegisterRepository;
+  private emailService: EmailService;
 
   constructor() {
     this.repository = new PreRegisterRepository();
+    this.emailService = new EmailService();
   }
 
   private isValidEmail(email: string): boolean {
@@ -42,6 +45,31 @@ export class PreRegisterService {
     // Simpan data ke database
     try {
       const preRegister = await this.repository.create(data);
+      
+      // Kirim email konfirmasi pendaftaran
+      const apkLink = process.env.APK_LINK || 'https://github.com/Pemuda-Pembuka-Langkah/pockeat-mobile/actions/runs/15113018029/artifacts/3151649368';
+      
+      // Coba kirim email tapi jangan biarkan error menghentikan flow - hanya log error
+      try {
+        // Tidak perlu await karena kita tidak butuh hasilnya untuk melanjutkan
+        this.emailService.sendPreRegisterConfirmationEmail(data.email, data.name, apkLink)
+          .catch(err => console.error('Error sending confirmation email:', err));
+      } catch (emailError) {
+        console.error('Error initiating pre-register confirmation email:', emailError);
+      }
+      
+      // Kirim email notifikasi ke admin (juga tanpa menunggu/await)
+      try {
+        this.emailService.sendPreRegisterNotificationToAdmin({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          reason: data.reason
+        }).catch(err => console.error('Error sending admin notification:', err));
+      } catch (emailError) {
+        console.error('Error initiating admin notification email:', emailError);
+      }
+      
       return preRegister;
     } catch (error) {
       console.error('Error creating pre-register:', error);

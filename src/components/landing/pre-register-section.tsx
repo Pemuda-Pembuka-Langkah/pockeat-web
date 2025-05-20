@@ -51,6 +51,30 @@ const PreRegisterSection = () => {
 
   const [showPlayStoreCTA, setShowPlayStoreCTA] = useState(false)
 
+  // Fungsi untuk mendaftar sebagai PlayStore tester
+  const registerAsPlayStoreTester = async (name: string, email: string) => {
+    try {
+      const response = await fetch('/api/playstore-testers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Gagal mendaftar sebagai tester');
+      }
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Error registering as PlayStore tester:', error);
+      return { success: false, error };
+    }
+  }
+
   const handleAppSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -66,7 +90,7 @@ const PreRegisterSection = () => {
     
     setIsSubmittingApp(true)
     try {
-      // Call API endpoint
+      // Call API endpoint untuk pre-register
       const response = await fetch('/api/pre-register', {
         method: 'POST',
         headers: {
@@ -86,13 +110,32 @@ const PreRegisterSection = () => {
         throw new Error(data.error || 'Terjadi kesalahan saat mendaftar')
       }
       
+      // Otomatis daftarkan juga sebagai PlayStore tester
+      const testerRegistration = await registerAsPlayStoreTester(
+        appFormData.name,
+        appFormData.email
+      );
+
+      // Siapkan pesan sukses
+      let successMessage = "Pendaftaran pre-register berhasil! Kami telah mengirimkan email dengan tautan APK.";
+      
+      // Tambahkan info tentang PlayStore tester jika berhasil
+      if (testerRegistration.success) {
+        successMessage += " Anda juga telah terdaftar sebagai tester PlayStore!";
+        // Update tester form data untuk konsistensi
+        setTesterFormData({
+          name: appFormData.name,
+          email: appFormData.email
+        });
+      } else {
+        // Masih tampilkan CTA PlayStore jika pendaftaran tester gagal
+        setShowPlayStoreCTA(true);
+      }
+      
       toast({
         title: "Berhasil!",
-        description: "Pendaftaran berhasil! Kami telah mengirimkan email dengan tautan APK."
+        description: successMessage
       })
-      
-      // Show PlayStore tester CTA
-      setShowPlayStoreCTA(true)
       
       // Reset form
       setAppFormData({
@@ -102,7 +145,6 @@ const PreRegisterSection = () => {
         reason: ''
       })
     } catch (error) {
-      // Removed console.error
       toast({
         variant: "destructive",
         title: "Error",
@@ -185,12 +227,23 @@ const PreRegisterSection = () => {
 
         <div className="mt-12 mx-auto max-w-3xl">
           <Tabs defaultValue="app" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 p-1 h-auto">
-              <TabsTrigger value="app" className="flex items-center justify-center gap-2 py-3 px-4 data-[state=active]:bg-white">
+            <TabsList className="grid w-full grid-cols-2 mb-8 p-1 h-auto bg-gray-100 rounded-lg">
+              <TabsTrigger 
+                value="app" 
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-md
+                  data-[state=active]:bg-[#4AB8A1] data-[state=active]:text-white
+                  transition-all duration-200"
+              >
                 <Smartphone className="h-4 w-4" />
                 <span>Pre-Register App</span>
               </TabsTrigger>
-              <TabsTrigger id="playstore-tab" value="tester" className="flex items-center justify-center gap-2 py-3 px-4 data-[state=active]:bg-white">
+              <TabsTrigger 
+                id="playstore-tab" 
+                value="tester" 
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-md
+                  data-[state=active]:bg-[#4AB8A1] data-[state=active]:text-white
+                  transition-all duration-200"
+              >
                 <Play className="h-4 w-4" />
                 <span>Jadi Tester Play Store</span>
               </TabsTrigger>
@@ -269,19 +322,48 @@ const PreRegisterSection = () => {
                     </Button>
                     
                     {showPlayStoreCTA && (
-                      <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg animate-fade-in">
-                        <h4 className="font-medium text-amber-800 mb-2">Yuk, Jadi Tester PlayStore Juga!</h4>
-                        <p className="text-amber-700 text-sm mb-3">
-                          Dapatkan akses prioritas dan kompensasi finansial dengan mendaftar sebagai tester PlayStore kami.
-                        </p>
-                        <Button 
-                          type="button" 
-                          variant="outline"
-                          className="w-full border-amber-400 text-amber-700 hover:bg-amber-100 hover:text-amber-800"
-                          onClick={() => document.getElementById('playstore-tab')?.click()}
-                        >
-                          Daftar Sebagai Tester PlayStore
-                        </Button>
+                      <div className="mt-8 relative overflow-hidden rounded-xl shadow-md animate-fade-in">
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#4AB8A1]/90 to-[#FF6B35]/90 z-0"></div>
+                        <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/pattern-light.svg')] opacity-10 z-0"></div>
+                        
+                        <div className="relative z-10 p-5">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="bg-white rounded-full p-2 shadow-sm">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="m5 3 14 9-14 9V3z"></path>
+                              </svg>
+                            </div>
+                            <h4 className="font-semibold text-white text-lg">Jadi Google Play Tester!</h4>
+                          </div>
+                          
+                          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4">
+                            <p className="text-white text-sm">
+                              ✓ Akses prioritas ke fitur terbaru
+                              <br />✓ Kompensasi finansial untuk kontribusi
+                              <br />✓ Pengaruh langsung ke pengembangan produk
+                            </p>
+                          </div>
+                          
+                          <Button 
+                            type="button"
+                            className="w-full bg-white hover:bg-white/90 text-[#4AB8A1] font-medium shadow-sm"
+                            onClick={() => {
+                              // Langsung isi form tester dengan data yang sudah ada
+                              setTesterFormData({
+                                name: appFormData.name,
+                                email: appFormData.email
+                              });
+                              // Pindah ke tab tester
+                              document.getElementById('playstore-tab')?.click();
+                            }}
+                          >
+                            Daftar Sekarang
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
+                              <path d="M5 12h14"></path>
+                              <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                          </Button>
+                        </div>
                       </div>
                     )}
                   </form>

@@ -15,168 +15,100 @@ export interface EmailOptions {
 
 export class EmailService {
   private transporter: nodemailer.Transporter;
+  private fromEmail: string;
   
   constructor() {
+    // Setup SMTP transporter dengan konfigurasi dari .env
     this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || process.env.NEXT_PUBLIC_SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || process.env.NEXT_PUBLIC_SMTP_PORT),
-      secure: true,
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: Number(process.env.SMTP_PORT || 465),
+      secure: true, // true untuk port 465, false untuk yang lain
       auth: {
-        user: process.env.SMTP_USER || process.env.NEXT_PUBLIC_SMTP_USER,
-        pass: process.env.SMTP_PASSWORD || process.env.NEXT_PUBLIC_SMTP_PASSWORD,
-      },
+        user: process.env.SMTP_USER || 'pockeat.service@gmail.com',
+        pass: process.env.SMTP_PASSWORD || ''
+      }
     });
+    
+    this.fromEmail = process.env.SMTP_FROM_EMAIL || 'pockeat.service@gmail.com';
   }
   
   /**
-   * Mengirim email dengan opsi yang diberikan
-   * @param options - Opsi email
-   * @returns Promise yang resolve ketika email berhasil dikirim
+   * Send an email
+   * @param options Email options
+   * @returns Object with status and message
    */
-  async sendEmail(options: EmailOptions): Promise<nodemailer.SentMessageInfo> {
+  async sendEmail(options: EmailOptions): Promise<{ success: boolean; message: string }> {
     try {
       const { to, subject, html, cc, bcc, attachments } = options;
       
-      const mailOptions = {
-        from: process.env.SMTP_FROM_EMAIL || process.env.NEXT_PUBLIC_SMTP_FROM_EMAIL,
+      // Kirim email menggunakan nodemailer
+      const info = await this.transporter.sendMail({
+        from: this.fromEmail,
         to,
         subject,
         html,
-        ...(cc ? { cc } : {}),
-        ...(bcc ? { bcc } : {}),
-        ...(attachments ? { attachments } : {})
-      };
+        cc,
+        bcc,
+        attachments
+      });
       
-      return await this.transporter.sendMail(mailOptions);
+      return { 
+        success: true, 
+        message: `Email sent successfully: ${info.messageId}` 
+      };
     } catch (error) {
       console.error('Error sending email:', error);
-      throw error;
+      return {
+        success: false,
+        message: `Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}`
+      };
     }
   }
-  
+
   /**
-   * Mengirim email kontak dari pengguna ke admin
-   * @param name Nama pengirim
-   * @param email Email pengirim
-   * @param category Kategori pesan
-   * @param message Isi pesan
-   * @returns Promise yang resolve ketika email berhasil dikirim
+   * Send confirmation email for pre-register
+   * @param email Recipient email
+   * @param name Recipient name
+   * @param apkLink Link to APK
+   * @returns Response from sendEmail
    */
-  async sendContactEmail(name: string, email: string, category: string, message: string): Promise<nodemailer.SentMessageInfo> {
-    const adminEmail = process.env.SMTP_USER || process.env.NEXT_PUBLIC_SMTP_USER;
-    
-    const html = this.generateAdminEmailContent({
-      name,
-      email,
-      category,
-      message
-    });
-    
-    return this.sendEmail({
-      to: adminEmail as string,
-      subject: `Contact Message From ${name} [${email}]`,
-      html
-    });
-  }
-  
-  /**
-   * Mengirim email konfirmasi ke pengguna setelah mengirim pesan kontak
-   * @param name Nama pengguna
-   * @param email Email pengguna
-   * @returns Promise yang resolve ketika email berhasil dikirim
-   */
-  async sendConfirmationEmail(name: string, email: string): Promise<nodemailer.SentMessageInfo> {
-    const html = this.generateUserConfirmationContent(name);
-    
-    return this.sendEmail({
-      to: email,
-      subject: 'Terima Kasih Telah Menghubungi PockEat',
-      html
-    });
-  }
-  
-  /**
-   * Mengirim email konfirmasi ke pengguna setelah pre-register dengan link APK
-   * @param name Nama pengguna
-   * @param email Email pengguna
-   * @returns Promise yang resolve ketika email berhasil dikirim
-   */
-  async sendPreRegisterConfirmationEmail(name: string, email: string): Promise<nodemailer.SentMessageInfo> {
-    const apkLink = process.env.APK_LINK;
-    const html = this.generatePreRegisterConfirmationContent(name, apkLink || '#');
-    
+  async sendPreRegisterConfirmationEmail(email: string, name: string, apkLink: string) {
+    const html = this.generatePreRegisterConfirmationContent(name, apkLink);
     return this.sendEmail({
       to: email,
       subject: 'Terima Kasih Telah Mendaftar di PockEat',
       html
     });
   }
-  
+
   /**
-   * Membuat konten HTML untuk email yang dikirim ke admin
+   * Send notification email to admin about new pre-register
+   * @param userData User data
+   * @returns Response from sendEmail
    */
-  private generateAdminEmailContent(data: { name: string; email: string; category: string; message: string }): string {
-    return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4AB8A1;">Pesan Kontak Baru dari Website PockEat</h2>
-        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px;">
-          <p><strong>Nama:</strong> ${data.name}</p>
-          <p><strong>Email:</strong> ${data.email}</p>
-          <p><strong>Kategori:</strong> ${data.category}</p>
-          <p><strong>Pesan:</strong></p>
-          <div style="background-color: white; padding: 15px; border-radius: 5px; border-left: 4px solid #FF6B35; margin-top: 10px;">
-            ${data.message.replace(/\\n/g, '<br/>')}
-          </div>
-        </div>
-        <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
-          Email ini dikirim secara otomatis dari website PockEat. 
-          Silakan balas langsung ke alamat email pengirim.
-        </p>
-      </div>
-    `;
+  async sendPreRegisterNotificationToAdmin(userData: { name: string; email: string; phone: string; reason?: string }) {
+    const html = this.generateAdminNotificationContent(userData);
+    return this.sendEmail({
+      to: 'pockeat.service@gmail.com',
+      subject: 'Pendaftaran Baru di PockEat',
+      html
+    });
   }
-  
+
   /**
-   * Membuat konten HTML untuk email konfirmasi ke pengguna
-   */
-  private generateUserConfirmationContent(name: string): string {
-    return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4AB8A1;">Terima Kasih, ${name}!</h2>
-        <p>Kami telah menerima pesan Anda dan akan meresponnya segera.</p>
-        <p>Tim kami sedang meninjau pesan Anda dan akan menghubungi Anda kembali
-           dalam 1-2 hari kerja.</p>
-        <div style="margin: 30px 0; padding: 20px; background-color: #f7f9fc; border-radius: 8px;">
-          <h3 style="color: #FF6B35; margin-top: 0;">Selagi Menunggu</h3>
-          <p>Anda dapat mengunjungi resource berikut:</p>
-          <ul style="padding-left: 20px;">
-            <li>Pelajari lebih lanjut tentang <a href="https://pockeat.vercel.app" style="color: #4AB8A1; text-decoration: none;">PockEat</a></li>
-            <li>Daftar pre-register untuk mendapatkan info terbaru</li>
-            <li>Ikuti kami di sosial media untuk update terbaru</li>
-          </ul>
-        </div>
-        <p style="margin-top: 30px;">Salam hangat,</p>
-        <p style="margin: 0;"><strong>Tim PockEat</strong></p>
-        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #666;">
-          <p>Email ini dikirim secara otomatis, mohon tidak membalas.</p>
-        </div>
-      </div>
-    `;
-  }
-  
-  /**
-   * Membuat konten HTML untuk email konfirmasi pre-register dengan link APK
+   * Generate HTML content for pre-register confirmation email
+   * @param name User name
+   * @param apkLink Link to APK
+   * @returns HTML content
    */
   private generatePreRegisterConfirmationContent(name: string, apkLink: string): string {
     return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 20px; padding: 20px;">
-          <h1 style="margin: 0; color: #4AB8A1;">Pock<span style="color: #FF6B35;">eat</span></h1>
-          <p style="color: #666;">AI-Driven Smart Companion untuk Tracking Kalori & Kesehatan</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="color: #4AB8A1;">Pock<span style="color: #FF6B35;">eat</span></h1>
         </div>
-        
-        <div style="background-color: #f9f9f9; padding: 25px; border-radius: 8px;">
-          <h2 style="color: #4AB8A1; margin-top: 0;">Terima Kasih, ${name}!</h2>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #4AB8A1;">Terima Kasih, ${name}!</h2>
           <p>Terima kasih telah mendaftar di PockEat! Kami sangat senang bahwa Anda tertarik untuk bergabung dengan komunitas kami.</p>
           <p>Kami telah memproses pendaftaran Anda dan akan memberi tahu Anda segera setelah aplikasi kami siap untuk digunakan secara penuh.</p>
           
@@ -205,6 +137,51 @@ export class EmailService {
         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #666; text-align: center;">
           <p>© 2025 PockEat. Semua hak dilindungi.</p>
           <p>Email ini dikirim secara otomatis, mohon tidak membalas.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Generate HTML content for admin notification email
+   * @param userData User data
+   * @returns HTML content
+   */
+  private generateAdminNotificationContent(userData: { name: string; email: string; phone: string; reason?: string }): string {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="color: #4AB8A1;">Pock<span style="color: #FF6B35;">eat</span> Admin</h1>
+        </div>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #4AB8A1;">Pendaftaran Pre-Register Baru</h2>
+          <p>Seseorang baru saja mendaftar untuk program pre-register PockEat:</p>
+          
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Nama</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userData.name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Email</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userData.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Telepon</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userData.phone}</td>
+            </tr>
+            ${userData.reason ? `
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Alasan</td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userData.reason}</td>
+            </tr>
+            ` : ''}
+          </table>
+          
+          <p>Anda dapat meninjau pendaftaran ini di dashboard admin.</p>
+        </div>
+        <div style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">
+          <p>© 2025 PockEat. All rights reserved.</p>
         </div>
       </div>
     `;
