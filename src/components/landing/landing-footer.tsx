@@ -31,18 +31,11 @@ const Footer = () => {
               AI-Driven Smart Companion untuk Tracking Kalori & Kesehatan dengan Seamless
             </p>
             <div className="flex gap-4">
-              <a href="#" className="rounded-full bg-white/10 p-2 hover:bg-[#4AB8A1]/20">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="rounded-full bg-white/10 p-2 hover:bg-[#4AB8A1]/20">
+
+              <a href="https://www.instagram.com/pockeatofficial?igsh=MXA3dmpwOHA2dGE5Mg%3D%3D&utm_source=qr" className="rounded-full bg-white/10 p-2 hover:bg-[#4AB8A1]/20">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="rounded-full bg-white/10 p-2 hover:bg-[#4AB8A1]/20">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="rounded-full bg-white/10 p-2 hover:bg-[#4AB8A1]/20">
-                <Youtube className="h-5 w-5" />
-              </a>
+              
             </div>
           </div>
 
@@ -117,14 +110,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-[#4AB8A1]" />
-                <a href="mailto:hello@pockeat.co.id" className="hover:text-[#4AB8A1]">
-                  hello@pockeat.co.id
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-5 w-5 text-[#4AB8A1]" />
-                <a href="tel:+6281234567890" className="hover:text-[#4AB8A1]">
-                  +62 812-3456-7890
+                <a href="mailto:pockeat.service@gmail.com" className="hover:text-[#4AB8A1]">
+                  pockeat.service@gmail.com
                 </a>
               </li>
             </ul>

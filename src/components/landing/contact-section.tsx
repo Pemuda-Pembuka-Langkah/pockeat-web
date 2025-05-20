@@ -19,12 +19,6 @@ import { toast } from 'sonner'
 
 const contactCards = [
   {
-    icon: MessageSquare,
-    title: 'WhatsApp',
-    description: 'Dapatkan respon cepat via WhatsApp',
-    info: '+62 812-3456-7890',
-  },
-  {
     icon: Users,
     title: 'Email',
     description: 'Hubungi kami untuk informasi terkini terhadap PockEat',
