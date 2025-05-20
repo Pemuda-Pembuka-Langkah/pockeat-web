@@ -9,13 +9,17 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
-const navItems = [
+type NavItem = {
+  name: string;
+  href: string;
+  isPage?: boolean;
+}
+
+const navItems: NavItem[] = [
   { name: 'Overview', href: '#overview' },
   { name: 'Benefits', href: '#benefits' },
   { name: 'How it Works', href: '#how-it-works' },
-  { name: 'Features', href: '#features' },
-  { name: 'Contact', href: '#contact' },
-  { name: 'Downloads', href: '/downloads', isPage: true }
+  { name: 'Contact', href: '#contact' }
 ]
 
 const Navbar = () => {
@@ -71,10 +75,10 @@ const Navbar = () => {
               </button>
             ))}
             <Button 
-              onClick={() => scrollToSection('#prototype')}
+              onClick={() => scrollToSection('#pre-register')}
               className="rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
             >
-              Demo
+              Pre Register
             </Button>
           </div>
 
@@ -98,10 +102,10 @@ const Navbar = () => {
                     </button>
                   ))}
                   <Button 
-                    onClick={() => scrollToSection('#prototype')}
+                    onClick={() => scrollToSection('#pre-register')}
                     className="mt-4 w-full rounded-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90" 
                   >
-                    Demo
+                    Pre Register
                   </Button>
                 </div>
               </SheetContent>
