@@ -6,10 +6,10 @@ const testerService = new PlaystoreTesterService();
 
 export async function PATCH(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = context.params.id;
+    const id = params.id;
     const body = await request.json();
     const updateData: UpdatePlaystoreTesterDto = {
       status: body.status,
@@ -28,7 +28,7 @@ export async function PATCH(
       data: result
     });
   } catch (error) {
-    console.error(`Error in PATCH /api/playstore-testers/${context.params.id}:`, error);
+    console.error(`Error in PATCH /api/playstore-testers/${params.id}:`, error);
     return NextResponse.json(
       { success: false, error: 'Terjadi kesalahan saat memperbarui status tester' },
       { status: 500 }
