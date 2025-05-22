@@ -248,7 +248,7 @@ const PreRegisterSection = () => {
 
         <div className="mt-12 mx-auto max-w-3xl">
           <Tabs defaultValue="app" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 p-1 h-auto bg-gray-100 rounded-lg">
+            {/* <TabsList className="grid w-full grid-cols-2 mb-8 p-1 h-auto bg-gray-100 rounded-lg">
               <TabsTrigger 
                 value="app" 
                 className="flex items-center justify-center gap-2 py-3 px-4 rounded-md
@@ -268,7 +268,7 @@ const PreRegisterSection = () => {
                 <Play className="h-4 w-4" />
                 <span>Jadi Tester Play Store</span>
               </TabsTrigger>
-            </TabsList>
+            </TabsList> */}
 
             {/* Pre-Register App Tab */}
             <TabsContent value="app">
