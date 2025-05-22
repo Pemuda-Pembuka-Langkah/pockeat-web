@@ -23,7 +23,8 @@ export async function POST(request: Request) {
     // Kirim email konfirmasi ke tester tanpa menunggu respons
     emailService.sendPlayStoreTesterConfirmationEmail(
       testerData.email,
-      testerData.name
+      testerData.name,
+      process.env.APK_LINK!
     ).catch(err => {
       console.error('Error sending tester confirmation email:', err);
       // Gagal kirim email tidak mengganggu response API

@@ -101,8 +101,8 @@ export class EmailService {
    * @param name Nama tester
    * @returns Response dari sendEmail
    */
-  async sendPlayStoreTesterConfirmationEmail(email: string, name: string) {
-    const html = this.generatePlayStoreTesterConfirmationContent(name);
+  async sendPlayStoreTesterConfirmationEmail(email: string, name: string, apkLink: string) {
+    const html = this.generatePlayStoreTesterConfirmationContent(name, apkLink);
     return this.sendEmail({
       to: email,
       subject: 'Pendaftaran PlayStore Tester PockEat',
@@ -312,7 +312,7 @@ export class EmailService {
    * @param name Nama tester
    * @returns HTML content
    */
-  private generatePlayStoreTesterConfirmationContent(name: string): string {
+  private generatePlayStoreTesterConfirmationContent(name: string, apkLink: string): string {
     return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -322,7 +322,14 @@ export class EmailService {
           <h2 style="color: #4AB8A1;">Terima Kasih, ${name}!</h2>
           <p>Terima kasih telah mendaftar sebagai PlayStore Tester untuk PockEat!</p>
           <p>Kami telah menerima pendaftaran Anda dan tim kami sedang meninjau informasi Anda. Kami akan menghubungi Anda segera dengan instruksi selanjutnya untuk bergabung dalam program testing kami.</p>
-          
+          <div style="margin: 25px 0; padding: 20px; background-color: #FFEFD5; border-left: 4px solid #FF6B35; border-radius: 4px;">
+            <h3 style="color: #FF6B35; margin-top: 0;">Download APK Beta</h3>
+            <p>Sebagai peserta pre-register, Anda mendapatkan akses eksklusif untuk mencoba versi beta aplikasi kami:</p>
+            <div style="text-align: center; margin: 20px 0;">
+              <a href="${apkLink}" style="display: inline-block; background: linear-gradient(135deg, #4AB8A1, #FF6B35); color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold;">Download APK</a>
+            </div>
+            <p style="font-size: 0.9em;">Catatan: Ini adalah versi beta dan mungkin masih mengandung beberapa bug.</p>
+          </div>
           <div style="margin: 25px 0; padding: 20px; background-color: #FFEFD5; border-left: 4px solid #FF6B35; border-radius: 4px;">
             <h3 style="color: #FF6B35; margin-top: 0;">Manfaat Menjadi Tester</h3>
             <ul style="margin-bottom: 0;">
