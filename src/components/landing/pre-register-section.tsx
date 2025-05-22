@@ -345,62 +345,64 @@ const PreRegisterSection = () => {
 
                   {/* Konfirmasi PlayStore Tester setelah pre-register berhasil */}
                   {showPlayStoreConfirmation && (
-                    <div className="mt-8 p-4 border border-[#4AB8A1] rounded-lg bg-[#F0FBF9]">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="bg-[#4AB8A1] rounded-full p-1.5 text-white mt-0.5">
+                    <div className="mt-8 p-3 sm:p-4 border border-[#4AB8A1] rounded-lg bg-[#F0FBF9]">
+                      <div className="flex items-start gap-2 sm:gap-3 mb-3">
+                        <div className="bg-[#4AB8A1] rounded-full p-1.5 text-white mt-0.5 flex-shrink-0">
                           <Check size={16} />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-[#4AB8A1]">Pendaftaran Berhasil!</h4>
-                          <p className="text-sm text-gray-600">Kami telah mengirimkan instruksi ke email Anda.</p>
+                          <h4 className="font-semibold text-[#4AB8A1] text-sm sm:text-base">Pendaftaran Berhasil!</h4>
+                          <p className="text-xs sm:text-sm text-gray-600">Kami telah mengirimkan instruksi ke email Anda.</p>
                         </div>
                       </div>
                       
-                      <div className="bg-white p-4 rounded-md mb-4 border border-gray-100">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="bg-[#FF6B35]/10 rounded-full p-2">
-                            <Play className="h-5 w-5 text-[#FF6B35]" />
+                      <div className="bg-white p-3 sm:p-4 rounded-md mb-4 border border-gray-100">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                          <div className="bg-[#FF6B35]/10 rounded-full p-1.5 sm:p-2 flex-shrink-0">
+                            <Play className="h-4 w-4 sm:h-5 sm:w-5 text-[#FF6B35]" />
                           </div>
-                          <h4 className="font-medium">Ingin menjadi PlayStore Tester?</h4>
+                          <h4 className="font-medium text-sm sm:text-base">Ingin menjadi PlayStore Tester?</h4>
                         </div>
-                        <p className="text-sm text-gray-600 mb-4">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                           Jadilah tester PockEat di Google PlayStore dan dapatkan akses ke versi terbaru aplikasi:
                         </p>
-                        <ul className="text-sm text-gray-600 space-y-1 mb-4 ml-1">
+                        <ul className="text-xs sm:text-sm text-gray-600 space-y-1 mb-3 sm:mb-4 ml-1">
                           <li className="flex items-start gap-2">
-                            <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                            <span className="text-[#4AB8A1] text-base sm:text-lg leading-5 flex-shrink-0">•</span>
                             <span>Akses prioritas ke fitur terbaru</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                            <span className="text-[#4AB8A1] text-base sm:text-lg leading-5 flex-shrink-0">•</span>
                             <span>Kompensasi finansial untuk kontribusi</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <span className="text-[#4AB8A1] text-lg leading-5">•</span>
+                            <span className="text-[#4AB8A1] text-base sm:text-lg leading-5 flex-shrink-0">•</span>
                             <span>Pengaruh langsung pada pengembangan produk</span>
                           </li>
                         </ul>
                         
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                           <Button
                             onClick={handlePlayStoreRegistration}
-                            className="flex-1 bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90"
+                            className="w-full bg-gradient-to-r from-[#4AB8A1] to-[#FF6B35] text-white hover:opacity-90 text-xs sm:text-sm py-2 h-auto"
                             disabled={isSubmittingTester}
                           >
                             {isSubmittingTester ? (
                               <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Mendaftar...
+                                <Loader2 className="mr-2 h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
+                                <span className="whitespace-nowrap">Mendaftar...</span>
                               </>
-                            ) : 'Ya, Daftar Sebagai Tester'}
+                            ) : (
+                              <span className="whitespace-nowrap">Ya, Daftar Sebagai Tester</span>
+                            )}
                           </Button>
                           <Button
                             variant="outline"
                             onClick={handleCancelPlayStoreRegistration}
-                            className="flex-1"
+                            className="w-full text-xs sm:text-sm py-2 h-auto"
                             disabled={isSubmittingTester}
                           >
-                            Tidak, Terima Kasih
+                            <span className="whitespace-nowrap">Tidak, Terima Kasih</span>
                           </Button>
                         </div>
                       </div>
